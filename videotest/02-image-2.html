@@ -51,6 +51,7 @@
 
 				requestAnimationFrame(function () {
 					currentFrame = Math.round((totalImagesCount - 1) * progress);
+					// console.log( currentFrame, progress );
 					imgElem.src = videoImages[currentFrame].src;
 				});
 			});

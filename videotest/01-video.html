@@ -30,7 +30,14 @@
 	<script>
 		const videoElem = document.querySelector('.sample-video');
 		let progress;
-		let currentFrame;
+		// let currentFrame;
+
+		videoElem.addEventListener('loadeddata', ()=> {
+			console.log('비디오 로드 완료');
+
+			init();
+		})
+
 		function init() {
 			document.body.classList.remove('before-load');
 
@@ -39,12 +46,15 @@
 				console.log(progress);
 				if (progress < 0) progress = 0;
 				if (progress > 1) progress = 1;
-
-				videoElem.currentTime = videoElem.duration * progress;
+				
+				requestAnimationFrame(function() {
+					// videoElem.duration 총 재생시간
+					videoElem.currentTime = videoElem.duration * progress;
+				})
 			});
 		}
 
-		window.addEventListener('load', init);
+		// window.addEventListener('load', init);
 	</script>
 </body>
 </html>

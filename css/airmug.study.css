@@ -18,10 +18,18 @@ a {
     text-decoration: none;
 }
 .global-nav {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
     height: 44px;
     padding: 0 1rem;
 }
 .local-nav {
+    position: absolute;
+    left: 0;
+    top: 45px;
+    width: 100%;
     height: 54px;
     padding: 0 1rem;
     border-bottom: 1px solid #ddd;
@@ -51,7 +59,7 @@ a {
 
 .scroll-section {
     padding-top: 50vh; /* 뷰포트 높이의 절반 만큼만 */
-
+    border: 1px solid red;
 }
 #scroll-section-0 h1{
     font-size: 4rem;
@@ -64,7 +72,8 @@ a {
     margin: 5px 0;
     height: 3em; /* 폰트사이즈 기준으로 높이값 설정 */
     font-size: 2.5rem;
-    background: rgba( 0,0,0, .3);
+    opacity: 0;
+    top: 35vh;
 }
 .main-message p {
     font-weight: bold;
@@ -93,14 +102,23 @@ a {
     font-size: 3rem;
     color: rgb(29, 29, 31);
 }
-.desc-message {
-    width: 50%;
-    font-weight: bold;
+.sticky-elem.desc-message {
+	width: 45%;
+	font-weight: bold;
+	opacity: 0;
 }
 .pin {
     width: 1px;
     height: 100px;
     background: rgb(29, 29, 31);
+}
+#scroll-section-2 .b {
+    top: 10%;
+    left: 40%;
+}
+#scroll-section-2 .c {
+    top: 15%;
+    left: 45%;
 }
 .mid-message {
     max-width: 1000px; 
@@ -131,15 +149,14 @@ a {
 .sticky-elem {
     display: none;
     position: fixed;
-    top: 0;
     left: 0;
     width: 100%;
 }
 /* add class on body  */
 #show-scene-0 #scroll-section-0 .sticky-elem,
-#show-scene-1 #scroll-section-0 .sticky-elem,
-#show-scene-2 #scroll-section-0 .sticky-elem,
-#show-scene-3 #scroll-section-0 .sticky-elem {
+#show-scene-1 #scroll-section-1 .sticky-elem,
+#show-scene-2 #scroll-section-2 .sticky-elem,
+#show-scene-3 #scroll-section-3 .sticky-elem {
     display: block;
 }
 
@@ -165,6 +182,13 @@ a {
     }
     .desc-message {
         width: 20%;
+    }
+    #scroll-section-2 .b {
+        top: 20%;
+        left: 53%;
+    }
+    #scroll-section-2 .c {
+        left: 55%;
     }
     .mid-message {
         font-size: 4vw;
