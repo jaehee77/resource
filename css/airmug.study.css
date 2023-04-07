@@ -24,6 +24,7 @@ a {
     width: 100%;
     height: 44px;
     padding: 0 1rem;
+    z-index: 10;
 }
 .local-nav {
     position: absolute;
@@ -33,6 +34,7 @@ a {
     height: 54px;
     padding: 0 1rem;
     border-bottom: 1px solid #ddd;
+    z-index: 11;
 }
 .global-nav-links,
 .local-nav-links {
@@ -62,8 +64,11 @@ a {
     border: 1px solid red;
 }
 #scroll-section-0 h1{
+    position: relative;
+    top: -10vh;
     font-size: 4rem;
     text-align: center;
+    z-index: 5;
 }
 .main-message {
     display: flex;
@@ -158,6 +163,17 @@ a {
 #show-scene-2 #scroll-section-2 .sticky-elem,
 #show-scene-3 #scroll-section-3 .sticky-elem {
     display: block;
+}
+.sticky-elem-canvas {
+    top: 0;
+    height: 100%;
+    /* background: #ccc; */
+}
+.sticky-elem-canvas canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* transform: translate(-50%, -50%); */
 }
 
 @media (min-width: 1024px) {

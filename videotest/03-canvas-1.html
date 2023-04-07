@@ -29,6 +29,8 @@
 	<script>
 		const canvas = document.querySelector('.sample-canvas');
 		const context = canvas.getContext('2d');
+		
+		// 이미지
 		const videoImages = [];
 		let totalImagesCount = 960;
 		let progress;
@@ -44,6 +46,8 @@
 
 		function init() {
 			document.body.classList.remove('before-load');
+
+			// 0번째 첫번째 이미지를 처음에 그려놓고 시작
 			context.drawImage(videoImages[0], 0, 0);
 
 			window.addEventListener('scroll', function () {
@@ -52,7 +56,7 @@
 				if (progress > 1) progress = 1;
 
 				currentFrame = Math.round((totalImagesCount - 1) * progress);
-				context.drawImage(videoImages[currentFrame], 0, 0);
+				context.drawImage(videoImages[currentFrame], 0, 0); // x, y 좌표
 			});
 		}
 
