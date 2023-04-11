@@ -11,6 +11,23 @@
 </head>
 <body>
 
+	<!-- 
+		svg 에 css 크기가 54픽셀로 정의
+		만약 viewBox 를 정의안하면 54픽셀로 정의되지만
+		css 에 값이 정의되어 있고 viewBox 를 540 540 를 설정하게 되면
+		svg 태그내에 영향을 받는 요소의 크기들은 viewBox 가 결정되기 때문에
+		540*540 안에 원(r="25") 50 짜리가 있는 것이기 때문에 작게 나오게 된다.
+		즉, 실제크기는 54픽셀이지만 그걸 540 으로 바라보면 50은 그만큼 작은 것
+		<svg class="loading-circle" viewBox="0 0 540 540">
+			<circle cx="50%" cy="50%" r="25"></circle>
+		</svg>
+	 -->
+	<!-- <div class="loading">
+		<svg class="loading-circle">
+			<circle cx="50%" cy="50%" r="25"></circle>
+		</svg>
+	</div> -->
+
 	<div class="container">
 		<nav class="global-nav">
 			<div class="global-nav-links">
@@ -88,8 +105,15 @@
 				아이디어를 광활하게 펼칠<br>
 				아름답고 부드러운 음료 공간.
 			</p>
+			<canvas id="image-blend-canvas" width="1920" height="1080"></canvas>
 			<p class="canvas-caption">
 				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet at fuga quae perspiciatis veniam impedit et, ratione est optio porro. Incidunt aperiam nemo voluptas odit quisquam harum in mollitia. Incidunt minima iusto in corporis, dolores velit. Autem, sit dolorum inventore a rerum distinctio vero illo magni possimus temporibus dolores neque adipisci, repudiandae repellat. Ducimus accusamus similique quas earum laborum. Autem tempora repellendus asperiores illum ex! Velit ea corporis odit? Ea, incidunt delectus. Sapiente rerum neque error deleniti quis, et, quibusdam, est autem voluptate rem voluptas. Ratione soluta similique harum nihil vel. Quas inventore perferendis iusto explicabo animi eos ratione obcaecati.
+			</p>
+		</section>
+
+		<section class="normal-content">
+			<p class="mid-message">
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero illum voluptate sed saepe at exercitationem minima, dolorem officia corrupti iure error explicabo eligendi, molestiae vitae. Harum asperiores velit, perspiciatis facere necessitatibus cupiditate sed, sint excepturi veniam recusandae deserunt doloremque totam obcaecati earum, similique odio assumenda aut! Aliquid fugit qui dolore eligendi dignissimos, saepe iure nihil ea sed porro accusantium sapiente perferendis voluptatum commodi cupiditate quaerat, unde placeat distinctio velit, eveniet cum cumque? Distinctio, iure! Dolorum molestiae, quae quia delectus obcaecati numquam aliquid corrupti quis eligendi temporibus ea! Quasi cum dignissimos, veritatis sunt, magnam expedita dolore ullam ab repudiandae obcaecati sapiente?
 			</p>
 		</section>
 

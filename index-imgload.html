@@ -10,6 +10,21 @@
 	<link rel="stylesheet" href="css/main.css">
 </head>
 <body class="before-load">
+
+	<!-- 
+		svg 에 css 크기가 54픽셀로 정의
+		만약 viewBox 를 정의안하면 54픽셀로 정의되지만
+		css 에 값이 정의되어 있고 viewBox 를 540 540 를 설정하게 되면
+		svg 태그내에 영향을 받는 요소의 크기들은 viewBox 가 결정되기 때문에
+		540*540 안에 원(r="25") 50 짜리가 있는 것이기 때문에 작게 나오게 된다.
+		즉, 실제크기는 54픽셀이지만 그걸 540 으로 바라보면 50은 그만큼 작은 것
+	 -->
+	<!-- <div class="loading">
+		<svg class="loading-circle" viewBox="0 0 540 540">
+			<circle cx="50%" cy="50%" r="25"></circle>
+		</svg>
+	</div> -->
+
 	<div class="loading">
 		<svg class="loading-circle">
 			<circle cx="50%" cy="50%" r="25"></circle>
