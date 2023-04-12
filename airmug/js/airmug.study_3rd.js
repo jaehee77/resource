@@ -1,24 +1,31 @@
 (() => {
 
-    let yOffset = 0; //
-    let currentScene = 0;
+    let yOffset = 0; // window.pageYOffset 대신 쓸 변수 (yOffset 으로 또 다른 조작을 하기 위해)
     let prevScrollHeight = 0;
-    let enterNewScence = false;
+    let currentScene = 0; // 눈 앞에 보이는 씬(scroll-section)
+    let enterNewScence = false // 음수값 방지
 
     const sceneInfo = [
         {
-            // 0
             type: 'sticky',
-            heightNum: 5, // 브라우저 높이의 5배로 scrollHeight 세팅
+            heightNum: 5,
             scrollHeight: 0,
             objs: {
                 container: document.querySelector('#scroll-section-0'),
                 messageA: document.querySelector('#scroll-section-0 .main-message.a'),
                 messageB: document.querySelector('#scroll-section-0 .main-message.b'),
                 messageC: document.querySelector('#scroll-section-0 .main-message.c'),
-                messageD: document.querySelector('#scroll-section-0 .main-message.d')
+                messageD: document.querySelector('#scroll-section-0 .main-message.d'),
+                
+                canvas: document.querySelector('#video-canvas-0'),
+                context: document.querySelector('#video-canvas-0').getContext('2d'),
+                videoImages: [],
             },
             values: {
+                videoImageCount: 300,
+                imageSequence: [0, 299],
+                canvas_opacity: [1, 0, {start: 0.9, end: 1}],
+
                 messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }],
                 messageB_opacity_in: [0, 1, { start: 0.3, end: 0.4 }],
                 messageC_opacity_in: [0, 1, { start: 0.5, end: 0.6 }],
@@ -34,13 +41,12 @@
                 messageA_translateY_out: [0, -20, { start: 0.25, end: 0.3 }],
                 messageB_translateY_out: [0, -20, { start: 0.45, end: 0.5 }],
                 messageC_translateY_out: [0, -20, { start: 0.65, end: 0.7 }],
-                messageD_translateY_out: [0, -20, { start: 0.85, end: 0.9 }]
+                messageD_translateY_out: [0, -20, { start: 0.85, end: 0.9 }],
             }
         },
         {
-            // 1
             type: 'normal',
-            // heightNum: 5, // type normal에서는 필요 없음
+            heightNum: 5,
             scrollHeight: 0,
             objs: {
                 container: document.querySelector('#scroll-section-1'),
@@ -48,11 +54,14 @@
             }
         },
         {
-            // 2
             type: 'sticky',
             heightNum: 5,
             scrollHeight: 0,
             objs: {
+                canvas: document.querySelector('#video-canvas-1'),
+                context: document.querySelector('#video-canvas-1').getContext('2d'),
+                videoImages: [],
+
                 container: document.querySelector('#scroll-section-2'),
                 messageA: document.querySelector('#scroll-section-2 .a'),
                 messageB: document.querySelector('#scroll-section-2 .b'),
@@ -61,6 +70,11 @@
                 pinC: document.querySelector('#scroll-section-2 .c .pin')
             },
             values: {
+                videoImageCount: 960,
+                imageSequence: [0, 959],
+                canvas_opacity_in: [0, 1, {start: 0, end: 0.1}],
+                canvas_opacity_out: [1, 0, {start: 0.95, end: 1}],
+
                 messageA_translateY_in: [20, 0, { start: 0.15, end: 0.2 }],
                 messageB_translateY_in: [30, 0, { start: 0.5, end: 0.55 }],
                 messageC_translateY_in: [30, 0, { start: 0.72, end: 0.77 }],
@@ -82,46 +96,107 @@
             }
         },
         {
-            // 3
             type: 'sticky',
             heightNum: 5,
             scrollHeight: 0,
             objs: {
                 container: document.querySelector('#scroll-section-3'),
-                canvasCaption: document.querySelector('.canvas-caption')
+                canvasCaption: document.querySelector('.canvas-caption'),
+                canvas: document.querySelector('#image-blend-canvas'),
+                context: document.querySelector('#image-blend-canvas').getContext('2d'),
+                imagesPath: [
+                    './images/blend-image-1.jpg',
+                    './images/blend-image-2.jpg',
+                ],
+                images: [],
             },
             values: {
-    
+                rect1X: [0, 0, {start: 0, end: 0}],
+                rect2X: [0, 0, {start: 0, end: 0}],
             }
         }
     ];
 
+    function setCanvasImages() {
+        let imgElem;
+        for (let i = 0; i < sceneInfo[0].values.videoImageCount; i++) {
+            // imgElem = document.createElement('img'); // 또는 아래꺼
+            imgElem = new Image();
+            imgElem.src = `./video/001/IMG_${6726 + i}.JPG`;
+            sceneInfo[0].objs.videoImages.push(imgElem);
+        }
+
+        let imgElem2;
+        for (let i = 0; i < sceneInfo[2].values.videoImageCount; i++) {
+            imgElem2 = new Image();
+            imgElem2.src = `./video/002/IMG_${7027 + i}.JPG`;
+            sceneInfo[2].objs.videoImages.push(imgElem2);
+        }
+
+        let imgElem3;
+        for (let i = 0; i < sceneInfo[3].objs.imagesPath.length; i++) {
+            imgElem3 = new Image();
+            imgElem3.src = sceneInfo[3].objs.imagesPath[i];
+            sceneInfo[3].objs.images.push(imgElem3);
+            
+        }
+
+    }
+    setCanvasImages();
+
+    function setLayout() {
+
+        for ( let i = 0; i < sceneInfo.length; i++ ) {
+            if( sceneInfo[i].type === 'sticky' ) {
+                sceneInfo[i].scrollHeight = sceneInfo[i].heightNum * window.innerHeight;
+            } else if( sceneInfo[i].type === 'normal' ) {
+                sceneInfo[i].scrollHeight = sceneInfo[i].objs.container.offsetHeight;
+            }
+            sceneInfo[i].objs.container.style.height = `${sceneInfo[i].scrollHeight}px`;
+        }
+
+        yOffset = window.pageYOffset;
+        let totalScrollHeight = 0;
+        for (let i = 0; i < sceneInfo.length; i++) {
+            totalScrollHeight += sceneInfo[i].scrollHeight;
+            if(totalScrollHeight >= yOffset) {
+                currentScene = i;
+                break;
+            }
+        }
+        document.body.setAttribute('id', `show-scene-${currentScene}`);
+
+        const heightRatio = window.innerHeight / 1080; // 1080 캔버스 높이(1920 x 1080: 16:9)
+        sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
+        sceneInfo[2].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
+    }
+
     function calcValues(values, currentYOffset) {
         let rv;
-
-        const scrollHeight = sceneInfo[currentScene].scrollHeight;
+        
+        // 현재 씬(스크롤섹션) 전체의 스크롤된 범위를 비율로 구하기 
+        const scrollHeight = sceneInfo[currentScene].scrollHeight
         const scrollRatio = currentYOffset / scrollHeight;
+        
 
-        if ( values.length === 3) {
+        if(values.length === 3) {
+            // start ~ end 값이 있는 경우 start, end 사이의 애니메이션 실행
             const partScrollStart = values[2].start * scrollHeight;
             const partScrollEnd = values[2].end * scrollHeight;
             const partScrollHeight = partScrollEnd - partScrollStart;
 
-            if(currentYOffset >= partScrollStart && currentYOffset <= partScrollEnd) {
-                // 부분요소에서 스크롤의 스크롤 비율
-                // (currentYOffset - partScrollStart) / partScrollHeight 
+            if( currentYOffset >= partScrollStart && currentYOffset <= partScrollEnd ) {
                 rv = (currentYOffset - partScrollStart) / partScrollHeight * (values[1] - values[0]) + values[0];
             } else if(currentYOffset < partScrollStart) {
                 rv = values[0];
             } else if(currentYOffset > partScrollEnd) {
                 rv = values[1];
             }
-
+           
         } else {
-            rv = scrollRatio * (values[1] - values[0]) + values[0];
+            rv = scrollRatio * (values[1] - values[0]) + values[0]; // [1, 0] 이면 1 ~ 0
         }
-
-
+        
         return rv;
     }
 
@@ -129,22 +204,26 @@
         const objs = sceneInfo[currentScene].objs;
         const values = sceneInfo[currentScene].values;
         const currentYOffset = yOffset - prevScrollHeight;
-        const scrollHeight = sceneInfo[currentScene].scrollHeight;
+        const scrollHeight = sceneInfo[currentScene].scrollHeight
         const scrollRatio = currentYOffset / scrollHeight;
-    
-        switch (currentScene) {
+        
+        switch(currentScene) {
             case 0:
                 // console.log('0 play');
-                if (scrollRatio <= 0.22) {
+                let sequence = Math.round(calcValues(values.imageSequence, currentYOffset));
+                objs.context.drawImage(objs.videoImages[sequence], 0, 0);
+                objs.canvas.style.opacity = `${calcValues(values.canvas_opacity, currentYOffset)}`;
+
+                if(scrollRatio <= 0.22) {
                     // in
-                    objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currentYOffset);
+                    objs.messageA.style.opacity = `${calcValues(values.messageA_opacity_in, currentYOffset)}`;
                     objs.messageA.style.transform = `translate3d(0, ${calcValues(values.messageA_translateY_in, currentYOffset)}%, 0)`;
                 } else {
                     // out
-                    objs.messageA.style.opacity = calcValues(values.messageA_opacity_out, currentYOffset);
+                    objs.messageA.style.opacity = `${calcValues(values.messageA_opacity_out, currentYOffset)}`;
                     objs.messageA.style.transform = `translate3d(0, ${calcValues(values.messageA_translateY_out, currentYOffset)}%, 0)`;
                 }
-    
+
                 if (scrollRatio <= 0.42) {
                     // in
                     objs.messageB.style.opacity = calcValues(values.messageB_opacity_in, currentYOffset);
@@ -174,11 +253,20 @@
                     objs.messageD.style.opacity = calcValues(values.messageD_opacity_out, currentYOffset);
                     objs.messageD.style.transform = `translate3d(0, ${calcValues(values.messageD_translateY_out, currentYOffset)}%, 0)`;
                 }
-    
+                
                 break;
-    
+            
             case 2:
                 // console.log('2 play');
+                let sequence2 = Math.round(calcValues(values.imageSequence, currentYOffset));
+                objs.context.drawImage(objs.videoImages[sequence2], 0, 0);
+                if (scrollRatio <= 0.5) {
+                    objs.canvas.style.opacity = `${calcValues(values.canvas_opacity_in, currentYOffset)}`;
+                } else {
+                    objs.canvas.style.opacity = `${calcValues(values.canvas_opacity_out, currentYOffset)}`;
+                }
+                
+
                 if (scrollRatio <= 0.25) {
                     // in
                     objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currentYOffset);
@@ -212,11 +300,47 @@
                     objs.messageC.style.opacity = calcValues(values.messageC_opacity_out, currentYOffset);
                     objs.pinC.style.transform = `scaleY(${calcValues(values.pinC_scaleY, currentYOffset)})`;
                 }
-    
+
                 break;
-    
             case 3:
                 // console.log('3 play');
+                // 가로/세로 모두 꽉차게 하기 위해 여기서 세팅(계산 필요)
+                // 캔버스 너비와 브라우저 너비의 폭의 비율과 캔버스 높이와 브라우저 높이의 비율
+                const widthRatio = window.innerWidth / objs.canvas.width;
+                const heightRatio = window.innerHeight / objs.canvas.height;
+                // console.log(widthRatio, heightRatio);
+                // 캔버스가 납작한 형태라는 것, 16:9 이므로 높이 비율이 더 크게 나옴
+                // 너비를 크게 높이를 작게 리사이징하면 너비 비율이 크게 나옴
+
+                let canvasScaleRatio;
+                if(widthRatio <= heightRatio) {
+                    // 캔버스보다 브라우저 창이 홀쭉한 경우
+                    canvasScaleRatio = heightRatio;
+                } else {
+                    // 캔버스보다 브라우저 창이 납작한 경우
+                    canvasScaleRatio = widthRatio;
+                }
+
+                objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+                objs.context.drawImage(objs.images[0], 0, 0);
+
+                // 캔버스 사이즈에 맞춰 가정한 innerWidth 와 innerHeight
+                const recalculatedInnerWidth = window.innerWidth / canvasScaleRatio;
+                const recalculatedInnerHeight = window.innerHeight / canvasScaleRatio;
+                // console.log('canvasScaleRatio: ', canvasScaleRatio);
+                // console.log( recalculatedInnerWidth, recalculatedInnerHeight);
+
+                const whiteRectWidth = recalculatedInnerWidth * 0.15;
+                // 출발값
+                values.rect1X[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
+                // 최종값
+                values.rect1X[1] = values.rect1X[0] - whiteRectWidth;
+
+                values.rect2X[0] = values.rect1X[0] + recalculatedInnerWidth - whiteRectWidth;
+                values.rect2X[1] = values.rect2X[0] + whiteRectWidth;
+
+
+
                 break;
         }
     }
@@ -224,66 +348,49 @@
     function scrollLoop() {
         enterNewScence = false;
         prevScrollHeight = 0;
-        
+        // 처음에 0 은 실행자체를 하지 않기 때문에 prevScrollHeight 은 0 
         for (let i = 0; i < currentScene; i++) {
-            prevScrollHeight += sceneInfo[i].scrollHeight;
+            prevScrollHeight += sceneInfo[i].scrollHeight
         }
+
+        // sceneInfo[currentScene].scrollHeight
+        // 맨 처음 0일 경우 초기 셋팅된 값이 있음
+        // 그래서 맨처음 prevScrollHeight 0 이고 처음요소의 scrollHeight 값을 더하게 되어
+        // 처음 요소의 높이와 yOffset 를 비교하게 됨
+
+        // currentScene 이 1로 증가하면 그제서야  (i < 1) 0 조건이 만족해서 
+        // sceneInfo[0].scrollHeight 의 값이 prevScrollHeight 로 셋팅됨
         
-        if( yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
-            enterNewScence = true;
+        if( yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight ) {
             currentScene++;
+            enterNewScence = true;
             document.body.setAttribute('id', `show-scene-${currentScene}`);
         }
 
-        if (yOffset < prevScrollHeight) {
-            if( currentScene === 0) return;
+        if(yOffset < prevScrollHeight) {
+            if(currentScene === 0) return;
+            currentScene--;
             enterNewScence = true;
-            currentScene--
             document.body.setAttribute('id', `show-scene-${currentScene}`);
         }
-        
+
         if(enterNewScence) return;
         playAnimation();
     }
 
-    function setLayout() {
-
-        for (let i = 0; i < sceneInfo.length; i++) {
-            if( sceneInfo[i].type === 'sticky' ) {
-                sceneInfo[i].scrollHeight = sceneInfo[i].heightNum * window.innerHeight;
-            } 
-            else if( sceneInfo[i].type === 'normal') {
-                sceneInfo[i].scrollHeight = sceneInfo[i].objs.container.offsetHeight;
-            }
-            sceneInfo[i].objs.container.style.height = `${sceneInfo[i].scrollHeight}px`;
-        }
-
-        yOffset = window.pageYOffset;
-        totalScrollHeight = 0;
-        for (let i = 0; i < sceneInfo.length; i++) {
-            totalScrollHeight += sceneInfo[i].scrollHeight;
-            if( totalScrollHeight >= yOffset ) {
-                currentScene = i;
-                break;
-            }            
-        }
-        document.body.setAttribute('id', `show-scene-${currentScene}`);
-
-    }
-    
-
-
     window.addEventListener('scroll', () => {
-        yOffset = window.pageYOffset;
-        
+        yOffset = window.pageYOffset; 
         scrollLoop();
     })
-
-    window.addEventListener('resize', ()=> {
-        setLayout();
-    })
+    
     window.addEventListener('load', () => {
         setLayout();
-    })
+        sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
+        sceneInfo[2].objs.context.drawImage(sceneInfo[2].objs.videoImages[0], 0, 0);
+    });
+
+    window.addEventListener('resize', setLayout);
+    
+    
 
 })();

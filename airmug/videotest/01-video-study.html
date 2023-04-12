@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			height: 500vh;
+		}
+		body.before-load {
+			overflow-y: hidden;
+		}
+		.sample-video {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
+	</style>
+</head>
+<body class="before-load">
+	<video class="sample-video" src="../video/sample-low.mp4" muted></video>
+	<!-- <video class="sample-video" src="../video/sample-high.mp4" muted></video> -->
+
+	<script>
+		const videoElem = document.querySelector('.sample-video');
+		let progress;
+		// let currentFrame;
+
+		// loadeddata 이벤트: media 재생이 준비가 된 상태를 체크
+		// canplaythrough 이벤트 : media 를 재생할 수 있을 때 발생하지만,
+		// 비디오의 현재 재생시간을 조정하면 그때마다 발생하는 이벤트
+		videoElem.addEventListener('loadeddata', ()=> {
+			console.log('비디오 로드 완료');
+
+			init();
+		})
+
+		function init() {
+			document.body.classList.remove('before-load');
+			// 비디오 재생시간
+			// console.log(videoElem.duration);
+			
+
+			window.addEventListener('scroll', () => {
+				progress = window.pageYOffset / (document.body.offsetHeight - window.innerHeight)
+
+				if( progress < 0) progress = 0;
+				if( progress > 1) progress = 1;
+
+				requestAnimationFrame(function() {
+
+					videoElem.currentTime = videoElem.duration * progress;
+
+				})
+
+			})
+		}
+
+		// window.addEventListener('load', init);
+	</script>
+</body>
+</html>
