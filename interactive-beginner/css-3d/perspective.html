@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Interactive Web</title>
+    <style>
+        .world {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60vw;
+            height: 60vh;
+            background: #fff000;
+            perspective: 500px;
+             /* perspective 얼마나 내 눈에서 떨어져 있느냐, 어느정도 떨어져 있는 시점에서 바라볼 것인가를 정의하는 것 */
+             /* 멀리 떨어뜨리면 3d 효과는 완만하게 보이고 가까이 두면 극적으로 보인다. 크기는 고려하지 말것 */
+            /* 
+              사람눈에 대상(대상의 크기는 번외로하고)이 가까울 수록 3d 효과는 극적으로 보인다.
+              (가까이 있으면 당연히 크기도 커 보이지만 크기를 번외로 두고 3d 효과만을 중점으로 두었을 때)
+            */
+		  }
+      .card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        height: 150px;
+        margin: 1rem;
+        border-radius: 0.5em;
+        font-size: 1.5rem;
+        background: red;
+        transform: rotateY(45deg); /* 부모에 perspective 가 있으면 회전값 하나만 쓰면 같은 45도를 돌렸는데 다르게 보임 */
+        
+        /* 부모에 perspective 를 두지 않고 각요소를 균일하게 3d 효과를 하고 싶다면 요소자체에 정의 */
+        transform: perspective(500px) rotateY(45deg);
+      }
+    </style>
+</head>
+<body>
+    <div class="world">
+		<div class="card">A</div>
+		<div class="card">B</div>
+		<div class="card">C</div>
+    </div>
+</body>
+</html>
