@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .menu {
+            width: 600px;
+            background: #e4e4e4;
+            border-radius: 1rem;
+            padding: 5rem;
+            display: flex;
+            justify-content: space-around;
+        }
+        .menu-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+            padding: 10px 30px;
+            border-radius: .8rem;
+            border: 5px solid #fff;
+            background: rgb(255, 217, 0);
+            cursor: pointer;
+        }
+        .icon {
+            width: 30px;
+            height: auto;
+            margin-right: 1rem;
+            /* pointer-events: none; */
+        }
+        .btn-label {
+            font-size: 1rem;
+            font-weight: bold;
+            /* pointer-events: none; */
+        }
+        /* pointer-events: none 이 정의된 하위 요소들도 이벤트가 발생하지 않는다. */
+    </style>
+</head>
+<body>
+
+    <div class="menu">
+        <button class="menu-btn" data-value="1">
+            <img class="icon" src="./images/ilbuni_2.png" alt="">
+            <span class="btn-label">일분이 1</span>
+        </button>
+        <button class="menu-btn" data-value="2">
+            <img class="icon" src="./images/ilbuni_0.png" alt="">
+            <span class="btn-label">일분이 1</span>
+        </button>
+        <button class="menu-btn" data-value="3">
+            <img class="icon" src="./images/ilbuni_1.png" alt="">
+            <span class="btn-label">일분이 1</span>
+        </button>
+    </div>
+    
+    <script>
+
+
+         const menu = document.querySelector('.menu');
+
+         function clickHandler(e) {
+            // console.log(this); // 이벤트 걸린 자체가 출력
+            // console.log(e.currentTarget); // 이벤트 걸린 것을 가리키기 때문에 this 와 동일함
+
+            // console.log(e.target); // 클릭한 요소
+            // 이미지와 span 요소에 css 로 pointer-events: none; 정의해서 클릭이벤트를 받지 않도록하면
+            // 대상 타켓을 menu-btn 만 받도록 할 수 있다.
+
+
+            let elem = e.target;
+            while ( !elem.classList.contains('menu-btn') ) {
+                elem = elem.parentNode;
+
+                if( elem.nodeName === 'BODY') {
+                    elem = null;
+                    return;
+                }
+            }
+            console.log(elem, elem.dataset.value);
+            
+
+
+         }
+
+         menu.addEventListener('click', clickHandler)
+
+         // 동적으로 생성되는 버튼이 있다면 이벤트위임을 해야한다.
+         // 만약 위임을 하지않고 각각의 요소에 이벤트를 걸어놨다면 
+         // 이벤트가 발생할 요소가 동적으로 생성되었을 때 이벤트가 발생하지 않을 수 있기도 하고
+         // 동적 발생한 요소에 또 이벤트를 걸어줘야하는 번거로움이 발생할 수 있다.
+
+
+    </script>
+</body>
+</html>
