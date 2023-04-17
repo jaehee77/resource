@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        *:before,
+        *:after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: sans-serif;
+            width: 700px;
+            margin: 0 auto;
+            padding: 50px;
+            background: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+            font-size:24px;
+        }
+        ul {
+            list-style: none;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #fff;
+        }
+        a {
+            text-decoration: none;
+        }
+
+        .tab-section {
+            margin: 0 auto;
+            position: relative;
+            width: 600px;
+            height: 150px;
+            border: 1px solid #d0d0d0;
+            font-size: 0;
+
+        }
+        .tab-section::before,
+        .tab-section::after {
+            display: table;
+            content: "";
+        }
+        .tab-section::after {
+            clear: both;
+        }
+        .tab-section .tab-content {
+            display:none;
+            font-size: 12px;
+            position: absolute;
+            /* float: left; */
+            padding: 10px;
+            color: #fff;
+            -webkit-transition: all .4s ease;
+            transition: all .4s ease;
+        }
+        .tab-section .tab-content.activated {
+            display:block;
+        }
+
+        .tab-menu:after {
+            display: table;
+            content: "";
+            clear:both;
+        }
+        .tab-menu li {
+            float:left;
+            width: 33.333%;
+        }
+        .tab-menu li.is-selected a,
+        .tab-menu li.active a {
+            background-color:#282a36;
+            color:#fff;
+        }
+        .tab-section .tab-link {
+            position: relative;
+            display: block;
+            text-align: center;
+            font-size: 13px;
+            background: #fff;
+            padding: 10px 0;
+            border-bottom: 1px solid #d0d0d0;
+            color: #5b5b5b;
+            overflow: hidden;
+        }
+
+        .tab-section li  ~ li .tab-link {
+            border-left: 1px solid #bababa;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <h1>탭 메뉴</h1>
+
+<div class="tab-section">
+	<ul id="tab01" class="tab-menu">
+		<li class="tab-item" data-tab="1"><a href="#tab-1" class="tab-link"><span>✨</span> Tab 1</a></li>
+		<li class="tab-item" data-tab="2"><a href="#tab-2" class="tab-link"><span>✨</span>Tab 2</a></li>
+		<li class="tab-item" data-tab="3"><a href="#tab-3" class="tab-link"><span>✨</span>Tab 3</a></li>
+	</ul>
+	<div data-content="1" class="tab-content">
+		<h2>content 11111111</h2>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias amet commodi cupiditate molestias laboriosam sit! Delectus magni esse magnam libero </p>
+	</div>
+	<div data-content="2" class="tab-content" >
+		<h2>Lorem 22222222</h2>
+		<ul>
+			<li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+			<li>Aliquam tincidunt mauris eu risus.</li>
+			<li>Vestibulum auctor dapibus neque.</li>
+		</ul>
+	</div>
+	<div data-content="3" class="tab-content">
+		<h2>Yolo 3333333333333</h2>
+		<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+	</div>
+
+</div>
+
+<p>&nbsp;</p>
+
+
+<footer>No pain. No gain. Enjoy !!!</footer>
+
+<script>
+    const menu = document.querySelector('.tab-menu');
+    const contents = document.querySelectorAll('.tab-content');
+
+    activated(document.querySelector('[data-tab="1"]'));
+    let previousItem = document.querySelector('.is-selected') || null;
+    // console.log(previousItem);
+
+    function activated(activeElem) {
+        activeElem.classList.add('is-selected');
+    }
+
+    function inactivate() {
+        previousItem.classList.remove('is-selected');
+    }
+
+    function menuHandler(e) {
+        let targetElem = e.target;
+        
+        while (!targetElem.classList.contains('tab-item')) {
+            targetElem = targetElem.parentNode;
+            if(targetElem === "BODY") {
+                targetElem = null;
+                return
+            }
+        }
+        // console.log(targetElem, targetElem.dataset.tab);
+
+        if(previousItem) {
+            inactivate();
+        }
+
+        activated(targetElem);
+
+        previousItem = targetElem;
+        contents.forEach(content => {
+            // console.log(content.dataset.content);
+            if(targetElem.dataset.tab == content.dataset.content) {
+                content.classList.add('activated');
+            } else {
+                content.classList.remove('activated');
+            }
+        })
+
+
+    }
+    // activated(document.querySelector('[data-tab="1"]'));
+    contents[0].classList.add('activated')
+   
+
+    menu.addEventListener('click', menuHandler);
+
+</script>
+
+</body>
+</html>

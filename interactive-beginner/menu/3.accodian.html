@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        html{
+            font-size: 62.5%;
+        }
+
+        body {
+            line-height:1.5;
+        }
+
+        dl,dd {
+            margin:0;
+        }
+
+        .accodian {
+            max-width:600px;
+            margin-left:auto;
+            margin-right:auto;
+            font-size:1.6rem;
+            color:#fff;
+        }
+        .accodian-tab {
+            padding:10px;
+            background-color:#6A1B9a;
+            font-weight:bold;
+            text-transform:uppercase;
+            cursor:pointer;
+
+        }
+
+        .accodian-tab.on {
+            background-color:#ab47bc;
+        }
+        .accodian-con {
+            position: relative;
+            overflow: hidden;
+            background-color:#7b1fa2;
+            transition: height .4s;
+            height: 0;
+        }
+        .accodian-con.activated {
+            /* padding: 10px 10px 20px; */
+        }
+        .accodian-con div {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="accodian">
+        <dl>
+            <dt class="accodian-tab"><span>💥💢</span> menu1</dt>
+            <dd class="accodian-con">
+                <div>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.  <br />
+                Excepturi aut perspiciatis laborum praesentium autem necessitatibus <br />
+                ipsam omnis officiis iste dolore maxime, voluptatum rem facere? <br />
+                Doloribus molestias itaque corporis facilis nam.
+                </div>
+                
+        </dd>
+        </dl>
+        
+        <dl>
+            <dt class="accodian-tab"><span>💥💢</span> menu2</dt>
+            <dd class="accodian-con">
+                <div>
+                     Lorem ipsum dolor sit<br />
+                    <br /> amet consectetur adipisicing elit. Laudantium, aliquid! <br />
+                    Sit placeat repellat blanditiis dolore! Aperiam voluptates tempora <br />
+                    voluptas esse cupiditate delectus
+                    <br /> assumenda accusamus beatae veritatis<br />
+                    libero? Quas, dolorem illum.
+                </div>
+               
+            </dd>
+        </dl>
+       
+        <dl>
+            <dt class="accodian-tab"><span>💥💢</span> menu3</dt>
+            <dd class="accodian-con">
+                <div>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, necessitatibus. Assumenda aspernatur voluptatem, aliquam deleniti, dolores possimus qui velit repellendus optio libero fugit illum quam iure placeat ad veniam. Aspernatur!</dd>
+                </div>
+        </dl>
+      
+    </div>
+
+    <script>
+        const accodian = document.querySelector('.accodian');
+        const accodianTab = document.querySelectorAll('.accodian-tab');
+        const accodianCon = document.querySelectorAll('.accodian-con');
+        accodianTab.forEach((el, idx) => el.dataset.tab = idx);
+        accodianCon.forEach((el, idx) => el.dataset.con = idx);
+
+        let currentTab = document.querySelector('.accodian-tab.on') || null;
+
+
+        
+        function accodianHandler(e) {
+            let targetElem = e.target.closest('.accodian-tab');
+            if( targetElem === null ) return;
+            // console.log(targetElem);
+
+            if(currentTab) {
+                currentTab.classList.remove('on');
+            }
+            if(targetElem === currentTab) {
+                let currIdx = currentTab.dataset.tab * 1;
+                currentTab = null;
+                accodianCon[currIdx].style.height = '0px';
+                return;
+            }
+            targetElem.classList.add('on');
+
+            currentTab = targetElem;
+
+            accodianCon.forEach(item => {
+                if(item.dataset.con === targetElem.dataset.tab) {
+                    // item.classList.add('activated');
+                    item.style.height = "auto";
+                    
+                    // console.log(item.clientHeight);
+                    let height = `${item.clientHeight}px`;
+                    item.style.height = '0px';
+                    
+                    
+                    setTimeout(() => {
+                        item.style.height = height;
+                    }, 0)
+
+
+                } else {
+                    item.style.height = '0px';
+                    item.addEventListener('transitionend', () => {
+                        // item.classList.remove('activated');
+                    }, {once: true})
+                }
+            })
+
+
+        }
+
+        accodian.addEventListener('click', accodianHandler);
+        
+
+    </script>
+
+</body>
+</html>
