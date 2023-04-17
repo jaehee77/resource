@@ -45,9 +45,8 @@
             transition: height .4s;
             height: 0;
         }
-        .accodian-con.activated {
-            /* padding: 10px 10px 20px; */
-        }
+        /* .accodian-con.activated {
+        } */
         .accodian-con div {
             padding: 20px;
         }
@@ -125,7 +124,6 @@
 
             accodianCon.forEach(item => {
                 if(item.dataset.con === targetElem.dataset.tab) {
-                    // item.classList.add('activated');
                     item.style.height = "auto";
                     
                     // console.log(item.clientHeight);
