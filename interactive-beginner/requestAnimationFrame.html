@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .btn { font-size: 2rem;}
+    </style>
+</head>
+<body>
+
+    <button class="btn">취소</button>
+    
+
+    <script>
+        let timeId;
+        let n = 0;
+        const btn = document.querySelector('.btn');
+
+        // requestAnimationFrame 은 반복시킬 함수 안에 작성
+        function sample() {
+            n++;
+            console.log('sample!');
+
+            if(n > 200) return;
+
+            timeId = requestAnimationFrame(sample);
+            // 초당 60프레임을 목표로 반복한다.
+            // 목표이기 때문에 상황에 따라 덜 반복할 수도 있다.
+        }
+
+        // requestAnimationFrame(sample); 
+        // 바깥에서 실행하면 setTimeout 처럼 한번만 실행한다.
+
+        btn.addEventListener('click', () => {
+            cancelAnimationFrame(timeId);
+        });
+
+    </script>
+</body>
+</html>
