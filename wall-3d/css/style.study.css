@@ -1,0 +1,128 @@
+/* animation */
+
+
+body {
+    height: 500vw;
+    font-family: 'Apple SD Gothic Neo', 'Roboto', 'Noto Sans KR', NanumGothic, 'Malgun Gothic', sans-serif;
+    -webkit-overflow-scrolling: touch;
+    color: #555;
+    background: #fff000;
+    transition: background .5s;
+}
+body[data-char='ragirl'] {
+    background: #ff7200;
+}
+
+/* world */
+/* 3차원공간을 만들기 위한 속성 perspective */
+.world {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    perspective: 1000px; /* 원근감 적용 */
+}
+.stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    transform-style: preserve-3d; /* perspective 을 상속받기 위한 속성값 */
+}
+.house {
+    /* 하우스 공간 내부가 이동하는 것처럼 보이게 */
+    width: 100vw;
+    height: 100vh;
+    transform-style: preserve-3d;
+    transform: translateZ(-490vw); /* z 축으로 쭈욱 안쪽으로 들어간 것처럼 설정 */
+}
+.wall {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.8);
+}
+.wall-left {
+    /* left: -500vw;
+    transform: rotateY(90deg); */
+    width: 1000vw;   
+    /* left: -500vw; 를 안쓰고 transform: rotateY(90deg) translateZ(-500vw); 로도 가능 */
+    transform: rotateY(90deg) translateZ(-500vw);
+
+    background: #f8f8f8;
+}
+.wall-right {
+    width: 1000vw;
+    /* left: -500vw;
+    transform: rotateY(90deg) translateZ(100vw); */
+    /* left 와 겹쳐있는 것을 rotate 로 돌려놓은 상태이니까 z 축으로 이동 */
+    
+    transform: rotateY(90deg) translateZ(-400vw);
+    /* left: -500vw; 를 안쓰고 transform: rotateY(90deg) translateZ(-400vw); 로도 가능 */
+
+    background: #f8f8f8;
+}
+
+/* house 에 transform: translateZ(-490vw); 를 정의해놓았기 때문에 z 축을 적절히 배치함 */
+.wall-front-a {
+    transform: translateZ(300vw);
+}
+.wall-front-b {
+    transform: translateZ(50vw);
+}
+.wall-front-c {
+    transform: translateZ(-200vw);
+}
+.wall-front-d {
+    transform: translateZ(-500vw);
+}
+
+.wall-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.wall-title {
+    font-size: 5rem;
+}
+.progress-bar-con {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 5px;
+    background: #555;
+    z-index: 100;
+}
+.progress-bar {
+    width: 0;
+    height: 100%;
+    background: #00a8ff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
