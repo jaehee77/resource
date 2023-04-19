@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  background: linear-gradient(#4b0220, #691c46);
+}
+
+section {
+  position: relative;
+  width: 100%;
+}
+
+section.mainPage {
+  position: fixed;
+  top: 0;
+  padding-bottom: 50px;
+}
+
+section.mainPage .box {
+  width: 100%;
+  height: 100vh;
+  background-color: black;
+}
+
+section.mainPage .imageWrap {
+  height: 100vh;
+}
+
+@media only screen and (max-width: 768px) {
+  section.mainPage .imageWrap {
+    height: 70vh;
+  }
+}
+
+section.mainPage .imageWrap .parallaxImage {
+  position: fixed;
+  width: 100%;
+  height: inherit;
+  background-position: top center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  perspective: 400px;
+}
+
+section.mainPage .imageWrap .parallaxImage:nth-child(1) {
+  background-image: url(../image/main_0.png);
+}
+
+section.mainPage .imageWrap .parallaxImage:nth-child(2) {
+  background-image: url(../image/main_1.png);
+}
+
+section.mainPage .imageWrap .parallaxImage:nth-child(3) {
+  background-image: url(../image/main_2.png);
+}
+
+section.mainPage .imageWrap .parallaxImage:nth-child(4) {
+  background-image: url(../image/main_3.png);
+}
+
+section.mainPage .imageWrap .parallaxImage:nth-child(5) {
+  background-image: url(../image/main_4.png);
+}
+
+section.mainPage .imageWrap .parallaxImage:nth-child(6) {
+  background-image: url(../image/main_5.png);
+}
+
+section.mainPage .imageWrap .parallaxImage:nth-child(7) {
+  background-image: url(../image/main_6.png);
+}
+
+section.subPage {
+  z-index: 10;
+  padding-top: 100vh;
+  min-height: 60vh;
+}
+
+section.subPage .innerWrap {
+  position: relative;
+}
+
+section.subPage .innerWrap .contWrap {
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 20px 40px;
+  width: 700px;
+}
+
+@media only screen and (max-width: 768px) {
+  section.subPage .innerWrap .contWrap {
+    width: 100%;
+  }
+}
+
+section.subPage .innerWrap .contWrap p {
+  font-size: 20px;
+  line-height: 36px;
+  color: #f3f3f3;
+  margin: 20px 0;
+}

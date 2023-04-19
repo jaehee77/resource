@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            body {
+                background: linear-gradient(150deg, #13f0cf, #ddf311, #13f0cf);
+            }
+            h1 {
+                position: fixed;
+                left: 50px;
+                bottom: 0px;
+                font-size: 70px;
+                color: #fff;
+            }
+            .innerWrap {
+                width: 100%;
+                height: 5000px;
+            }
+            .progressWrap {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 5px;
+                background-color: #2d9c9a;
+            }
+            .bar {
+                width: 0%;
+                height: inherit;
+                position: absolute;
+                z-index: 100;
+                background-color: #fff;
+                transition: width 0.4s ease-out;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="progressWrap">
+            <div class="bar"></div>
+        </div>
+        <h1>0%</h1>
+        <div class="innerWrap"></div>
+    </body>
+    <script>
+        const h1 = document.querySelector("h1");
+        const progressBar = document.querySelector(".bar");
+        // h1.innerText = "1";
+        let scrollNum = 0;
+        let documentHeight = 0;
+        let per = 0;
+
+        window.addEventListener("scroll", () => {
+            scrollNum = window.scrollY;
+            documentHeight = document.body.scrollHeight - window.innerHeight;
+
+            per = percent(scrollNum, documentHeight) + "%";
+
+            h1.innerText = per;
+            progressBar.style.width = per;
+        });
+
+        const percent = (num, totalNum) => {
+            return ((num / totalNum) * 100).toFixed(0);
+        };
+    </script>
+</html>

@@ -1,0 +1,83 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  background: linear-gradient(#4b0220, #691c46);
+}
+
+section {
+  position: relative;
+  width: 100%;
+}
+section.mainPage {
+  padding-bottom: 50px;
+}
+section.mainPage .imageWrap {
+  height: 100vh;
+  overflow-y: hidden;
+}
+@media only screen and (max-width: 768px) {
+  section.mainPage .imageWrap {
+    height: 500px;
+  }
+}
+section.mainPage .imageWrap .parallaxImage {
+  position: fixed;
+  width: 100%;
+  height: inherit;
+  background-position: top center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+section.mainPage .imageWrap .parallaxImage:nth-child(1) {
+  background-image: url(../image/main_0.png);
+}
+section.mainPage .imageWrap .parallaxImage:nth-child(2) {
+  background-image: url(../image/main_1.png);
+}
+section.mainPage .imageWrap .parallaxImage:nth-child(3) {
+  background-image: url(../image/main_2.png);
+}
+section.mainPage .imageWrap .parallaxImage:nth-child(4) {
+  background-image: url(../image/main_3.png);
+}
+section.mainPage .imageWrap .parallaxImage:nth-child(5) {
+  background-image: url(../image/main_4.png);
+}
+section.mainPage .imageWrap .parallaxImage:nth-child(6) {
+  background-image: url(../image/main_5.png);
+}
+section.subPage {
+  background: linear-gradient(black, #340e23, black);
+}
+section.subPage .parallaxImage {
+  position: relative;
+  background: url(../image/main_6.png) bottom center no-repeat;
+  background-size: cover;
+  height: 400px;
+  width: 100%;
+  top: -400px;
+}
+section.subPage .innerWrap {
+  position: relative;
+  margin: 0 auto;
+  padding: 100px 0 300px;
+}
+section.subPage .innerWrap .contWrap {
+  margin: 0 auto;
+  padding: 20px 40px;
+  width: 700px;
+}
+@media only screen and (max-width: 768px) {
+  section.subPage .innerWrap .contWrap {
+    width: 100%;
+  }
+}
+section.subPage .innerWrap .contWrap p {
+  font-size: 20px;
+  line-height: 36px;
+  color: #f3f3f3;
+  margin: 20px 0;
+}/*# sourceMappingURL=interactive.css.map */

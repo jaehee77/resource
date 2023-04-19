@@ -1,0 +1,90 @@
+@charset "UTF-8";
+* {
+    box-sizing: border-box;
+}
+$mobile: "only screen and (max-width: 768px)";
+$content-width: 700px;
+
+body {
+    overflow-x: hidden;
+    background: linear-gradient(#4b0220, #691c46);
+}
+
+section {
+    position: relative;
+    width: 100%;
+    &.mainPage {
+        padding-bottom: 50px;
+
+        .imageWrap {
+            height: 100vh;
+            overflow-y: hidden;
+            @media #{$mobile} {
+                height: 500px;
+            }
+            .parallaxImage {
+                position: fixed;
+                width: 100%;
+                height: inherit;
+                background-position: top center;
+                background-size: cover;
+                background-repeat: no-repeat;
+
+                &:nth-child(1) {
+                    background-image: url(../image/main_0.png);
+                }
+                &:nth-child(2) {
+                    background-image: url(../image/main_1.png);
+                }
+                &:nth-child(3) {
+                    background-image: url(../image/main_2.png);
+                }
+                &:nth-child(4) {
+                    background-image: url(../image/main_3.png);
+                }
+                &:nth-child(5) {
+                    background-image: url(../image/main_4.png);
+                }
+                &:nth-child(6) {
+                    background-image: url(../image/main_5.png);
+                }
+            }
+        }
+    }
+
+    &.subPage {
+        background: linear-gradient(black, #340e23, black);
+
+        .parallaxImage {
+            position: relative;
+            background: url(../image/main_6.png) bottom center no-repeat;
+            background-size: cover;
+            height: 400px;
+            width: 100%;
+            top: -400px;
+        }
+
+        .innerWrap {
+            position: relative;
+            margin: 0 auto;
+            padding: 100px 0 300px;
+            // width: 900px;
+
+            .contWrap {
+                margin: 0 auto;
+                padding: 20px 40px;
+                width: $content-width;
+                @media #{$mobile} {
+                    width: 100%;
+                }
+
+                p {
+                    font-size: 20px;
+                    line-height: 36px;
+                    color: #f3f3f3;
+                    margin: 20px 0;
+                }
+            }
+        }
+    }
+}
