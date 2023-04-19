@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            body {
+                background-color: #3c7364;
+                overflow: hidden;
+            }
+            .gateBox {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 20px;
+                color: #fff;
+                width: 400px;
+            }
+            .top {
+                padding: 10px 30px;
+                border: 2px solid #fff;
+                text-align: center;
+            }
+            .bottom {
+                /* padding: 20px; */
+                border: 2px solid #fff;
+                border-top: none;
+                display: flex;
+                justify-content: space-evenly;
+            }
+            .bottom a {
+                color: #fff;
+                padding: 20px 0;
+                width: 50%;
+                text-align: center;
+                text-decoration: none;
+                transition: all 0.2s ease-out;
+            }
+            a:hover {
+                background-color: #fff;
+                color: black;
+            }
+
+            .line {
+                border: 1px solid #fff;
+            }
+            .cursorItem {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                z-index: 1000;
+                pointer-events: none;
+            }
+            .circle {
+                position: fixed;
+                width: 120px;
+                height: 120px;
+                background-color: yellowgreen;
+                border-radius: 50%;
+                margin: -60px -60px;
+                opacity: 0.5;
+                transition: all 0.2s ease-in-out;
+            }
+        </style>
+        <script>
+            window.onload = () => {
+                let x = 0,
+                    y = 0;
+                let targetX = 0,
+                    targetY = 0;
+                const speed = 0.09;
+                const cursorItem = document.querySelector(".cursorItem");
+                const circle = cursorItem.querySelector(".circle");
+
+                const buttonAll = document.querySelectorAll("a");
+
+                buttonAll.forEach((item) => {
+                    item.addEventListener("mouseenter", () => {
+                        circle.style.transform = "scale(.3)";
+                    });
+                    item.addEventListener("mouseleave", () => {
+                        circle.style.transform = "scale(1)";
+                    });
+                });
+
+                window.addEventListener("mousemove", (e) => {
+                    x = e.pageX;
+                    y = e.pageY;
+                });
+
+                const loop = () => {
+                    targetX += (x - targetX) * speed;
+                    targetY += (y - targetY) * speed;
+
+                    cursorItem.style.transform = `translate(${targetX}px, ${targetY}px)`;
+
+                    window.requestAnimationFrame(loop);
+                };
+                loop();
+            };
+        </script>
+    </head>
+    <body>
+        <div class="cursorItem">
+            <span class="circle"></span>
+        </div>
+        <div class="gateBox">
+            <div class="top">
+                <p>마스크를 써야 하나요??</p>
+            </div>
+            <div class="bottom">
+                <a href="#yes">네</a>
+                <span class="line"></span>
+                <a href="#no">아니요</a>
+            </div>
+        </div>
+    </body>
+</html>

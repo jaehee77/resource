@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+
+        <style>
+            body {
+                background-color: #13adcc;
+                height: 300vh;
+            }
+            h1 {
+                font-size: 30px;
+                padding: 20px;
+            }
+            .box {
+                width: 60px;
+                height: 60px;
+                /* background-color: black; */
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .box img {
+                width: 200px;
+            }
+        </style>
+        <script>
+            window.onload = () => {
+                const h1 = document.querySelector("h1");
+                const box = document.querySelector(".box");
+                //console.log(h1);
+
+                let x = 0;
+                let y = 0;
+                let targetX = 0;
+                let targetY = 0;
+                let speed = 0.05;
+
+                window.addEventListener("mousemove", (event) => {
+                    //console.log(event.pageY, event.clientY);
+                    x = event.pageX;
+                    y = event.pageY;
+
+                    h1.innerText = `x : ${event.pageX}  y: ${event.pageY}`;
+                });
+
+                const loop = () => {
+                    // console.log(1);
+
+                    // pageX, pageY 의 본래 수치에 점점 가까워지도록 하기 위한 수식
+                    // 마우스가 움직이면 pageX 로 간다면  targetX 는 이전 값이 계속 빼고 비율 곱함
+                    // 가속, 감속에 대한 수식
+                    targetX += (x - targetX) * speed;
+                    targetY += (y - targetY) * speed;
+
+                    //console.log(targetX.toFixed(2), targetY.toFixed(2));
+                    box.style.top = targetY.toFixed(2) + "px";
+                    box.style.left = targetX.toFixed(2) + "px";
+
+                    window.requestAnimationFrame(loop);
+                };
+                loop();
+            };
+        </script>
+    </head>
+    <body>
+        <h1></h1>
+        <div class="box">
+            <img src="./butterfly.gif" alt="나비" />
+        </div>
+    </body>
+</html>
