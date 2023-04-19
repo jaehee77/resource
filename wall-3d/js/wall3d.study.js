@@ -3,6 +3,7 @@
     const stageElem = document.querySelector('.stage');
     const houseElem = document.querySelector('.house');
     const barElem = document.querySelector('.progress-bar');
+    const selectCharacterElem = document.querySelector('.select-character');
     const mousePos = { x: 0, y: 0 };
     let maxScrollValue;
 
@@ -36,4 +37,22 @@
 
     // 처음에 문서로드가 되면 일단 한번은 실행함
     resizeHandler();
+
+
+    stageElem.addEventListener('click', (e) => {
+         // Character.study.js 에 생성자함수 정의되어 있음
+        //  console.log(e.clientX / innerWidth * 100);
+        new Character({
+            xPos: e.clientX / innerWidth * 100,
+            speed: Math.random() * 0.5 + 0.2,
+        });
+    })
+
+
+    selectCharacterElem.addEventListener('click', (e) => {
+        // let targetElem = e.target;
+        let dataChar = e.target.dataset.char;
+        document.body.setAttribute('data-char', dataChar);
+    })
+   
 })();
