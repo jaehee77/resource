@@ -74,7 +74,11 @@ body {
     z-index: 200;
     width: 120px;
     top: 5%;
-    transition: all 0.3s ease-out;
+    transition: all 1.3s ease-out;
+}
+.submarine img {
+    max-width: 100%;
+    animation: scdown 3.5s linear infinite;
 }
 
 .octopus {
@@ -86,3 +90,15 @@ body {
     opacity: 0.4;
     transition: all 2s ease-out;
 }
+
+@keyframes scdown {
+    0% {
+      transform: translateY(0);
+    }
+    38% {
+      transform: translateY(10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
