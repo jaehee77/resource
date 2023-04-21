@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-compatible" content="chrome=1,IE=edge">
+<title>깡코딩 - 초보자도 만들 수 있는 스크를인터렉션1편</title>
+<link rel="stylesheet" type="text/css" href="">
+<link rel="stylesheet" type="text/css" href="../../library/css/common.css">
+</head>
+<style type="text/css">
+.com_tit {margin:100px 0 80px; font-size:70px; text-align: center;}
+
+.sc_infinity {}
+.sc_infinity .list {}
+.sc_infinity .list:after {clear:both; display:block; content:'';}
+.sc_infinity .list li {float:left; width:25%;}
+.sc_infinity .list li figure {padding:10px;}
+
+.footer {height:200px;  background-color: #ddd;}
+.footer p {padding:50px 20px;}
+</style>
+<body>
+	<div class="wrap">
+		<section class="sec01">
+			<h2 class="com_tit">INFINITE SCROLL</h2>
+			<article class="sc_infinity">
+				<ul class="list">
+					<li>
+						<figure>
+							<img src="../images/1.jpg">
+						</figure>
+					</li>
+					<li>
+						<figure>
+							<img src="../images/2.jpg">
+						</figure>
+					</li>
+					<li>
+						<figure>
+							<img src="../images/3.jpg">
+						</figure>
+					</li>
+					<li>
+						<figure>
+							<img src="../images/1.jpg">
+						</figure>
+					</li>
+					<li>
+						<figure>
+							<img src="../images/2.jpg">
+						</figure>
+					</li>
+					<li>
+						<figure>
+							<img src="../images/3.jpg">
+						</figure>
+					</li>
+				</ul>
+			</article>
+			<div class="footer">
+				<p>FOOTER</p>
+			</div>
+		</section>
+
+	</div>
+<!--
+****** 2020 깡코딩 LICENSE 안내 ******
+이 프로그램은 저작권법의 보호를 받습니다.
+이 프로그램은 깡코딩 강의를 수강한 수강생들에게 무료로 제공됩니다.
+이 프로그램은 웹,앱 프로젝트에 자유롭게 사용할 수 있지만
+웹사이트, 커뮤니티, 블로그에 배포하거나 인터넷 강의, 유튜브등 유료 무료 강좌에 배포, 사용하는
+행위는 민사 및 형사법에 의해 규제되어 있으며, 기소 될 수 있습니다.
+-->
+<script type="text/javascript">
+window.onload = function() {
+	var target = document.querySelector('.sc_infinity .list');
+	var breakList = 10;
+	var listCount = 0;
+	var winTop;
+	var onTop;
+
+	function getList() {
+		var list;
+
+		listCount++;
+
+		if(listCount > breakList) {
+			list = null;
+		}else{
+			list = '<li><figure><img src="../images/1.jpg"></figure></li>';
+			list += '<li><figure><img src="../images/2.jpg"></figure></li>';
+			list += '<li><figure><img src="../images/3.jpg"></figure></li>';
+		}
+
+		return list;
+
+	}
+
+	function listCall() {
+		winTop = window.pageYOffset;
+		onTop = document.body.offsetHeight - window.innerHeight - document.querySelector('.footer').offsetHeight;
+
+		if(winTop >= onTop){
+
+			var data = getList();
+
+			if(data !== null) {
+				var el = document.createElement('div');
+				el.innerHTML = data;
+
+				var node = Array.from(el.children);
+				var arr = [];
+
+				arr.push.apply(arr, el.children);
+
+				arr.forEach(function(element) {
+					target.appendChild(element);
+				});
+			}else{
+				return false;
+			}
+
+		}
+	}
+
+	function init(){ //초기화
+		listCall();
+	}
+
+	window.addEventListener('scroll', function() {
+		listCall();
+	}, false);
+
+	init();
+
+};
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-compatible" content="chrome=1,IE=edge">
+	<title>깡코딩 - 초보자도 만들 수 있는 스크를인터렉션1편</title>
+	<link rel="stylesheet" type="text/css" href="">
+	<link rel="stylesheet" type="text/css" href="../../library/css/common.css">
+	<script type="text/javascript" src="../../library/js/jquery.1.12.4.js"></script>
+</head>
+<style type="text/css">
+.com_tit {
+	margin: 100px 0 80px;
+	font-size: 70px;
+	text-align: center;
+}
+
+.sc_infinity {}
+
+.sc_infinity .list {}
+
+.sc_infinity .list:after {
+	clear: both;
+	display: block;
+	content: '';
+}
+
+.sc_infinity .list li {
+	float: left;
+	width: 25%;
+}
+
+.sc_infinity .list li figure {
+	padding: 10px;
+}
+
+.footer {
+	height: 200px;
+	background-color: #ddd;
+}
+
+.footer p {
+	padding: 50px 20px;
+}
+</style>
+
+<body>
+	<div class="wrap">
+		<section class="sec01">
+			<h2 class="com_tit">INFINITE SCROLL</h2>
+			<article class="sc_infinity">
+				<ul class="list">
+					<li>
+						<figure>
+							<img src="../images/1.jpg">
+						</figure>
+					</li>
+					<li>
+						<figure>
+							<img src="../images/2.jpg">
+						</figure>
+					</li>
+					<li>
+						<figure>
+							<img src="../images/3.jpg">
+						</figure>
+					</li>
+					<li>
+						<figure>
+							<img src="../images/1.jpg">
+						</figure>
+					</li>
+					<li>
+						<figure>
+							<img src="../images/2.jpg">
+						</figure>
+					</li>
+					<li>
+						<figure>
+							<img src="../images/3.jpg">
+						</figure>
+					</li>
+				</ul>
+			</article>
+			<div class="footer">
+				<p>FOOTER</p>
+			</div>
+		</section>
+	</div>
+	<script type="text/javascript">
+	$(function() {
+		//코드를 작성해보세요.
+
+		$(window).scroll(function() {
+
+		});
+
+		function init() {
+
+		}
+
+		init();
+	});
+	</script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+

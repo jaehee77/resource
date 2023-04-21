@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<title>깡코딩 - 초보자도 만들 수 있는 스크를인터렉션1편</title>
+	<link rel="stylesheet" type="text/css" href="../../library/css/common.css">
+</head>
+<style type="text/css">
+/* common */
+.wrap {position:relative;}
+.inner {max-width:1100px; height: 100%;  margin: 0 auto;}
+.com_tit01 {font-family: 'NotoB'; font-size:120px; color:#fff; text-align: center;}
+.com_txt01 {max-width:70%; margin:0 auto; font-family: 'NotoR'; font-size:32px; color:#fff; text-align: center;;}
+
+/* main */
+.ggang_box {position:relative; height:500px; background-color:#fff;}
+.ggang_box h2 {position: absolute; left:0; top:50%; width: 100%; color:#000; font-size:80px; line-height:1; text-align: center;}
+
+.fix_motion {height: 7000px;}
+.fix_motion .fix_wrap {overflow: hidden; position: sticky; position: -webkit-sticky; top:0; left: 0; width: 100%; height: 100vh;}
+.fix_motion .fix_wrap .cont_box {overflow:hidden; position:relative; height: 100%;}
+.fix_motion .fix_wrap .cont_box .canvas_wrap {position:relative; width: 100%; height: 100%;}
+.fix_motion .fix_wrap .cont_box .canvas_wrap canvas {position: absolute; left:50%; top:50%; transform:translate(-50%,-50%); -webkit-transform:translate(-50%,-50%); -moz-transform:translate(-50%,-50%); -o-transform:translate(-50%,-50%); -ms-transform:translate(-50%,-50%);}
+.fix_motion .fix_wrap .cont_box .canvas_wrap .no_canvas {display: none;  position: absolute; left:50%; top:50%; width:1920px; height:1080px; transform:translate(-50%,-50%); -webkit-transform:translate(-50%,-50%); -moz-transform:translate(-50%,-50%); -o-transform:translate(-50%,-50%); -ms-transform:translate(-50%,-50%);}
+
+.fix_motion .fix_wrap .cont_box .txt {position: absolute; left:50%; top:50%; z-index:30; font-size:24px; color:transparent; transition:color .5s .5s;}
+.fix_motion .fix_wrap .cont_box .txt.active {color:#000;}
+.fix_motion .fix_wrap .cont_box .txt:after {position:absolute; left:-80%; top:18px; z-index:10; width:0%; height:1px; background:#000; content:""; transition:width .5s;}
+.fix_motion .fix_wrap .cont_box .txt.active:after {width:80%;}
+.fix_motion .fix_wrap .cont_box .txt.pos1 {margin-left:380px; margin-top:-230px;}
+.fix_motion .fix_wrap .cont_box .txt.pos2 {margin-left:-500px; margin-top:-50px;}
+.fix_motion .fix_wrap .cont_box .txt.pos2:after {left:auto; right:-80%;}
+.fix_motion .fix_wrap .cont_box .txt.pos3 {margin-left:150px; margin-top:100px;}
+
+@media only screen and (max-width: 1024px) {
+
+.ggang_box {height: 200px}
+.ggang_box h2 {font-size:26px;}
+
+.fix_motion {height: 5000px;}
+.fix_motion .fix_wrap .cont_box .txt { font-size:16px; }
+.fix_motion .fix_wrap .cont_box .txt:after {top:13px;}
+.fix_motion .fix_wrap .cont_box .txt.pos1 {margin-left: 0px; margin-top: -220px; transform:rotate(-90deg);}
+.fix_motion .fix_wrap .cont_box .txt.pos2 {margin-left: -120px; margin-top: 120px; transform:rotate(-90deg);}
+.fix_motion .fix_wrap .cont_box .txt.pos3 {margin-left: -50px; margin-top: 152px; transform:rotate(-90deg);}
+.fix_motion .fix_wrap .cont_box .txt.pos3:after {right:-80%; left:auto; }
+
+}
+</style>
+<body>
+	<div class="wrap">
+		<section class="ggang_box">
+			<h2>FIXED CONTENT</h2>
+		</section>
+		<section class="fix_motion">
+			<article class="fix_wrap">
+				<div class="cont_box ">
+					<div class="canvas_wrap">
+						<figure class="no_canvas">
+							<img src="../images/seq/62.jpg">
+						</figure>
+					</div>
+					<p class="txt pos1">
+						16인치 모니터
+					</p>
+					<p class="txt pos2">
+						인체공학 키보드
+					</p>
+					<p class="txt pos3">
+						터치 트랙패드
+					</p>
+				</div>
+			</article>
+		</section>
+		<section class="ggang_box"></section>
+	</div>
+<!--
+****** 2020 깡코딩 LICENSE 안내 ******
+이 프로그램은 저작권법의 보호를 받습니다.
+이 프로그램은 깡코딩 강의를 수강한 수강생들에게 무료로 제공됩니다.
+이 프로그램은 웹,앱 프로젝트에 자유롭게 사용할 수 있지만
+웹사이트, 커뮤니티, 블로그에 배포하거나 인터넷 강의, 유튜브등 유료 무료 강좌에 배포, 사용하는
+행위는 민사 및 형사법에 의해 규제되어 있으며, 기소 될 수 있습니다.
+-->
+<script type="text/javascript">
+window.onload = function() {
+
+	var scrollBody = document.querySelector('.fix_motion');
+
+	var scrollHeight;
+	var sectionOffsetTop;
+	var sectionScrolTop;
+	var scrollRealHeight;
+	var winScrollTop;
+	var scrollPerecnt;
+	var percent;
+
+	var windowWdith = window.innerWidth;
+	var mobileSize = 1024;
+	var isMobile;
+
+	var el = document.querySelector('.canvas_wrap');
+	var canvas = document.createElement('canvas');
+	var ctx = canvas.getContext('2d');
+	var imgSrc = '../images/seq/';
+	var imgFormat = '.jpg';
+	var imgLength = 116;
+	var pcImgSize = [1920,1080];
+	var mobileImgSize = [640,360];
+	var imgWidth;
+	var imgHeight;
+	var imgArray = [];
+	var imageIterlator = 0;
+
+	function setProperty() {
+
+		scrollHeight = scrollBody.offsetHeight;
+		winScrollTop = window.pageYOffset;
+		sectionOffsetTop = scrollBody.getBoundingClientRect().top + winScrollTop;
+		scrollRealHeight = (scrollHeight - window.innerHeight);
+		sectionScrolTop = winScrollTop - sectionOffsetTop;
+		scrollPerecnt = sectionScrolTop / scrollRealHeight;
+		percent = scrollPerecnt * 100;
+
+		windowWdith = window.innerWidth;
+		isMobile = windowWdith > mobileSize ? false : true;
+
+		imgWidth = !isMobile ? pcImgSize[0] : mobileImgSize[0];
+		imgHeight = !isMobile ? pcImgSize[1] : mobileImgSize[1];
+	};
+
+	function setCanvas() {
+
+		canvas.width = imgWidth;
+		canvas.height = imgHeight;
+	};
+
+	function scrollFunc() {
+
+		var sequence = Math.min(imgLength, Math.max(0, Number((imgLength * scrollPerecnt).toFixed(0))));
+
+		renderCanvas(sequence);
+		contentIn();
+	};
+
+	function renderCanvas(sequence) {
+
+		ctx.clearRect(0, 0, imgWidth, imgHeight);
+		ctx.drawImage(imgArray[sequence], 0, 0, imgWidth, imgHeight);
+	};
+
+	function contentIn() {
+
+		if(percent >= 39 && percent < 45) {
+			document.querySelector('.fix_motion .txt.pos1').classList.add('active');
+		}
+
+		if(percent >= 45 && percent < 51) {
+			document.querySelector('.fix_motion .txt.pos2').classList.add('active');
+		}
+
+		if(percent >= 51) {
+			document.querySelector('.fix_motion .txt.pos3').classList.add('active');
+		}
+
+		if(percent > 62 || percent < 38 ) {
+			document.querySelector('.fix_motion .txt.pos1').classList.remove('active');
+			document.querySelector('.fix_motion .txt.pos2').classList.remove('active');
+			document.querySelector('.fix_motion .txt.pos3').classList.remove('active');
+		}
+	};
+
+	function bindEvent() {
+
+		window.addEventListener('scroll', function() {
+
+			setProperty()
+			scrollFunc();
+		}, false);
+
+		window.addEventListener('resize', function() {
+
+			setProperty();
+			setCanvas();
+			scrollFunc();
+		}, false);
+	};
+
+	function init() {
+
+		el.appendChild(canvas);
+
+		for(var i = 0; i <= imgLength; i++) {
+
+			var img = new Image();
+			var path = imgSrc+i+imgFormat;
+
+				img.src = path;
+
+				img.onload = function(){
+					imageIterlator += 1;
+					if(imageIterlator === imgLength) {
+
+						setProperty();
+						setCanvas();
+						bindEvent();
+						scrollFunc();
+					};
+				}
+
+				imgArray.push(img);
+		};
+	};
+
+	init();
+};
+</script>
+</body>
+</html>

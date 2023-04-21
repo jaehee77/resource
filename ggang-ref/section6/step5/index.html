@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<title>깡코딩 - 초보자도 만들 수 있는 스크를인터렉션1편</title>
+	<link rel="stylesheet" type="text/css" href="../../library/css/common.css">
+	<script type="text/javascript" src="../../library/js/jquery.1.12.4.js"></script>
+</head>
+<style type="text/css">
+/* common */
+.wrap { position: relative; overflow: hidden;}
+.inner { max-width: 1100px; height: 100%; margin: 0 auto; }
+.com_tit01 { font-family: 'NotoB'; font-size: 60px; color: #fff; text-align: center; }
+.com_txt01 { max-width: 70%; margin: 0 auto; font-family: 'NotoR'; font-size: 24px; color: #fff; text-align: center; }
+.header_wrap { position: fixed; left: 0; top: 0; z-index: 100; width: 100%; height: 70px; border-bottom: 1px solid rgba(255, 255, 255, .2); }
+.header_wrap .logo { margin-top: 15px; padding-left: 20px; font-size: 24px; color: #fff; }
+.footer { position: relative; height: 300px; background: #111 }
+.footer .text_area { position: relative; z-index: 20; padding: 20px; }
+.footer .text_area p { color: #fff; font-size: 34px; }
+.tb_row { display: table; width: 100%; height: 100%; }
+.tb_row .tb_cell { display: table-cell; vertical-align: middle; }
+
+
+/* 배경 오버랩 효과 */
+.section_overlap {
+	overflow: hidden;
+	position: relative;
+	padding-top: 100px;
+	padding-bottom: 80px;
+}
+
+.section_overlap .overlap_box {}
+
+.section_overlap .overlap_box .tit_wrap {
+	position: relative;
+	z-index: 60;
+	padding-bottom: 50px;
+}
+
+.section_overlap .overlap_box .img_device {
+	position: relative;
+	z-index: 50;
+	width: 300px;
+	margin: 0 auto;
+}
+
+</style>
+
+<body>
+	<div class="wrap">
+		<header class="header_wrap">
+			<div class="logo">GGANG CODING</div>
+		</header>
+		<section class="section_overlap">
+			<article class="overlap_box">
+				<div class="tit_wrap">
+					<h2 class="com_tit01">OVERLAP BACKGROUND</h2>
+					<p class="com_txt01">배경으로 강조하는 상품이미지</p>
+				</div>
+				<figure class="img_device">
+					<img src="../images/img_iphone01.png">
+				</figure>
+			</article>
+		</section>
+		<footer class="footer">
+			<div class="text_area">
+				<p>
+					2020 GGANG CODING. 당신의 열정을 응원합니다. :)
+				</p>
+			</div>
+		</footer>
+	</div>
+	<script type="text/javascript">
+	setTimeout(function() {
+
+	}, 200)
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+
