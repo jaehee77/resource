@@ -9,6 +9,7 @@ let scrollNum = 0;
 let documentHeight = 0;
 let per = 0;
 const coverHeight = window.innerHeight;
+// const coverHeight = contWrap.clientHeight;
 
 coverWrap.style.height = coverHeight + "px";
 contWrap.style.marginTop = coverHeight + "px";
