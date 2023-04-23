@@ -63,14 +63,7 @@
 		</section>
 
 	</div>
-<!--
-****** 2020 깡코딩 LICENSE 안내 ******
-이 프로그램은 저작권법의 보호를 받습니다.
-이 프로그램은 깡코딩 강의를 수강한 수강생들에게 무료로 제공됩니다.
-이 프로그램은 웹,앱 프로젝트에 자유롭게 사용할 수 있지만
-웹사이트, 커뮤니티, 블로그에 배포하거나 인터넷 강의, 유튜브등 유료 무료 강좌에 배포, 사용하는
-행위는 민사 및 형사법에 의해 규제되어 있으며, 기소 될 수 있습니다.
--->
+
 <script type="text/javascript">
 window.onload = function() {
 	var target = document.querySelector('.sc_infinity .list');
@@ -97,6 +90,7 @@ window.onload = function() {
 	}
 
 	function listCall() {
+
 		winTop = window.pageYOffset;
 		onTop = document.body.offsetHeight - window.innerHeight - document.querySelector('.footer').offsetHeight;
 
@@ -108,10 +102,17 @@ window.onload = function() {
 				var el = document.createElement('div');
 				el.innerHTML = data;
 
+				// console.log(el.children);
+
+				// #1 유사배열인 HTMLColection 객체를 배열로 만드는 방법 #1
 				var node = Array.from(el.children);
+				// console.log(node);
 				var arr = [];
 
+				//  #2 유사배열인 HTMLColection 객체를 배열로 만드는 방법 #2
 				arr.push.apply(arr, el.children);
+
+				console.log(arr);
 
 				arr.forEach(function(element) {
 					target.appendChild(element);
