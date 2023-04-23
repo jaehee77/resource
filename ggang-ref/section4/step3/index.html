@@ -39,6 +39,10 @@
 .motion_ggang .ch_hand_right {
 	z-index: 10;
 	transform-origin: 199px 163px;
+	-webkit-transform-origin: 199px 163px;
+	-moz-transform-origin: 199px 163px;
+	-o-transform-origin: 199px 163px;
+	-ms-transform-origin: 199px 163px;
 }
 
 .motion_ggang .ch_hand_right {
@@ -65,6 +69,16 @@
 
 	100% {
 		transform: rotate(4deg);
+	}
+}
+
+@-webkit-keyframes hand_move {
+	0% {
+		-webkit-transform: rotate(-14deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(4deg);
 	}
 }
 
@@ -142,6 +156,23 @@
 	transform: translateY(0px);
 	-webkit-transform: translateY(0px);
 }
+
+@media only screen and (max-width: 767px) {
+	.motion_area .bg {
+		background-size: 400px
+	}
+
+	.motion_area .motion_moon {
+		right: 20px;
+		width: 100px;
+	}
+
+	.motion_ggang {
+		top: calc(100vh - 473px);
+	}
+
+	/* 모바일에서는 스크롤 속도가 빠르기 때문에 패럴요소가 움직이는 거리가 길경우 떨림 현상이 생길 수 있으므로 픽스드 처리합니다. */
+}
 </style>
 
 <body>
@@ -170,22 +201,81 @@
 </html>
 <script type="text/javascript">
 $(function() {
-	//코드를 작성해보세요. :)
 
-	function init() {
+	//코드를 작성해보세요. :)
+	//resize 이벤트를 추가해보세요 :)
+
+	/*변수및 요소 선언*/
+	var scrollBody = $('.motion_area'); //부모 스크롤 엘리먼트
+	var parallaxDistance = 110; // // 패럴럭스 요소가 움직이는 거리 조절
+
+	/*움직일 요소들*/
+	var bgContent = scrollBody.find('.bg'); //변수에 모션그래픽 캐릭터를 지정합니다.
+	var ggangBody = scrollBody.find('.motion_ggang'); //변수에 모션그래픽 캐릭터를 지정합니다.
+	var moonBody = scrollBody.find('.motion_moon'); // 변수에 달님을 지정합니다.
+
+	/*스크롤할때 변해야 할 값들*/
+	var scrollHeight; // 스크롤 높이
+	var scrollRealHeight; //실제로 스크롤해야될 높이를 담을 변수를 선업합니다
+	var winScrollTop; // 스크롤바의 높이를 담을 변수를 선업합니다
+	var percent; // 스크롤 백분율값을 담을 변수를 선업합니다
+	var moveDistance; // 패럴럭스 요소가 움직일 거리를 담을 변수 선업합니다
+
+	function setProperty() { // 스크롤할때 변할 값들을 셋팅해주는 함수
+
+		scrollHeight = scrollBody.height(); // 스크롤 높이
+		scrollRealHeight = (scrollHeight - $(window).height()); //실제로 스크롤해야될 높이값을 구합니다
+		winScrollTop = $(window).scrollTop(); //스크롤바의 현재 위치를 구합니다
+		var scrollPerecnt = winScrollTop / scrollRealHeight; //거리와 현재 위치를 기준으로 비율을 구합니다
+		percent = scrollPerecnt * 100; //백분율 구하기
+		moveDistance = scrollPerecnt * parallaxDistance; //패럴럭스 요소가 움직일 거리 실제 높이에 백분율값을 곱하고 시간차 움직임을 위해 패럴러스 거리값을 곱합니다.
 
 	};
 
-	$(window).scroll(function(e) {
+	function motionGgang() { // 스크롤할때 계속 호출될 모션 함수 선언
+		console.log('call motionGgang');
+		setProperty(); // 스크롤할때 변해야할 값들의 변수를 선언
+		changeBackgound(); //백그라운드를 바꿔주는 함수
+		parallaxMove(); //캐럭터 패럴럭스 움직임을 처리해주는 함수
+	};
 
+	function changeBackgound() { //해당 높이가 됐을때 백그라운드를 바꿔주는 함수
+		if (percent < 25) {
+			setBackground(0);
+		} else if (percent >= 25 && percent < 50) {
+			setBackground(1);
+		} else if (percent >= 50 && percent < 75) {
+			setBackground(2);
+			moonBody.removeClass('active'); //달님 퇴장
+		} else if (percent >= 75 && percent < 100) {
+			setBackground(3);
+			moonBody.addClass('active'); //달님 등장
+
+		}
+	};
+
+	function setBackground(index) { // 필요한 백그라운드 이미지로 교체해주는 함수
+		bgContent.removeClass('active');
+		bgContent.eq(index).addClass('active');
+	};
+
+	function parallaxMove() { //캐럭터 패럴럭스 움직임을 처리해주는 함수
+		ggangBody.css({ // 계산된 값을 css를 이용해 적용합니다
+			transform: 'translate(0px,' + moveDistance + 'px)'
+		});
+	};
+
+	function init() { //최초 한번실행
+		motionGgang();
+	};
+
+	$(window).scroll(function(e) { //스크롤 이벤트 바인딩
+		motionGgang();
 	});
 
-	init();
+	init(); //start
 });
 </script>
-
-
-
 
 
 
