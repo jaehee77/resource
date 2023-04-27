@@ -178,14 +178,8 @@
 			</div>
 		</footer>
 	</div>
-<!--
-****** 2020 깡코딩 LICENSE 안내 ******
-이 프로그램은 저작권법의 보호를 받습니다.
-이 프로그램은 깡코딩 강의를 수강한 수강생들에게 무료로 제공됩니다.
-이 프로그램은 웹,앱 프로젝트에 자유롭게 사용할 수 있지만
-웹사이트, 커뮤니티, 블로그에 배포하거나 인터넷 강의, 유튜브등 유료 무료 강좌에 사용하는
-행위는 민사 및 형사법에 의해 규제되어 있으며, 기소 될 수 있습니다.
--->
+
+	
 <script type="text/javascript">
 window.onload = function() {
 
@@ -201,12 +195,16 @@ window.onload = function() {
 	var parallaxBody = document.querySelector('.sec_list_overlap');
 	var parallaxList = document.querySelectorAll('.sec_parallax .img_box');
 
+	const secParallaxElem = document.querySelector('.sec_parallax');
+
 	var parallaxOffsetTop;
 	var parallaxThisTop;
 	var parallaxSpeed = 1200;
 	var parallaxPercent;
 	var parallaxStartValue = 1000;
 	var parallaxMoveDistance;
+	var isMac = navigator.platform.indexOf('Mac') >= 0;
+	var isEdge = /Edg/.test(navigator.userAgent);
 
 	function setProperty() {
 
@@ -214,8 +212,19 @@ window.onload = function() {
 		sectionMainTop = sectionMainVisual.getBoundingClientRect().top + winScrollTop;
 		sectionMainBottom = sectionMainTop + sectionMainVisual.offsetHeight;
 
+
+		// 요소의 getBoundingClientRect 의 탑값과 pageYOffset 을 더하면 문서에서의 top 값을 알수 있음
 		parallaxOffsetTop = parallaxBody.getBoundingClientRect().top + winScrollTop;
+		// console.log( parallaxBody.getBoundingClientRect().top, window.pageYOffset, parallaxOffsetTop);
+		
+		// console.log(parallaxOffsetTop, parallaxBody.offsetTop);
+		
+		// console.log(secParallaxElem.offsetTop, secParallaxElem.getBoundingClientRect().top + pageYOffset);
+
+
 		parallaxThisTop = winScrollTop - parallaxOffsetTop;
+		// console.log(parallaxThisTop);
+
 		parallaxPercent = parallaxThisTop / parallaxSpeed * 100;
 		parallaxMoveDistance = Math.max(parallaxStartValue - parallaxStartValue, Math.min(parallaxStartValue, parallaxStartValue - (parallaxStartValue * (parallaxPercent/100))));
 
@@ -249,17 +258,24 @@ window.onload = function() {
 
 	};
 
-	function moveSection() {
+	function moveSection(delta) {
+
+		var deltaY = delta || null;
 
 		setProperty();
 		motionParallax();
 
-		if(winScrollTop > sectionMainTop && winScrollTop < sectionMainBottom) {
+		if(deltaY && isMac && winScrollTop >= sectionMainTop && winScrollTop < sectionMainBottom ||
+			deltaY && !isMac && winScrollTop > sectionMainTop && winScrollTop < sectionMainBottom
+		) {
 
-			if(!sectionIsMoving) {
-				sectionIsMoving = true;
-				moveStartRender();
+			if(!sectionIsMoving){ //애니메이션이 진행중인지 체크합니다.
+				if(!isEdge){
+					sectionIsMoving = true;
+				}
+				moveStartRender(deltaY); //섹션 이동을 처리해주는 함수
 			}
+
 		}
 
 		if(winScrollTop >= sectionMainBottom) {
@@ -275,15 +291,17 @@ window.onload = function() {
 		sectionOverlap.classList.add('active');
 	};
 
-	function moveStartRender() {
+	function moveStartRender(deltaY) {
 
-		if(!header.classList.contains('active')){
+		if(deltaY > 0) {
 
 			header.classList.add('active');
 			sectionMainVisual.classList.add('active');
 			sectionOverlap.classList.add('active');
 
-			scrollMove(sectionMainBottom+1);
+			if(!isEdge) {
+				scrollMove(sectionMainBottom+1);
+			}
 
 		} else {
 
@@ -291,7 +309,9 @@ window.onload = function() {
 			sectionMainVisual.classList.remove('active');
 			sectionOverlap.classList.remove('active');
 
-			scrollMove(sectionMainTop);
+			if(!isEdge) {
+				scrollMove(sectionMainTop);
+			}
 		}
 
 	};
@@ -315,12 +335,12 @@ window.onload = function() {
 
 			window.scrollTo(0, scrollY);
 
-			if(scrollY >= moveY && dir > 0) { //다운 클리어
+			if(scrollY >= moveY && dir > 0) {
 				sectionIsMoving = false;
-				clearInterval(loop)
-			} else if(scrollY <= moveY && dir < 0) { //업클리어
+				clearInterval(loop);
+			} else if(scrollY <= moveY && dir < 0) {
 				sectionIsMoving = false;
-				clearInterval(loop)
+				clearInterval(loop);
 			}
 		}, 10);
 	};
@@ -330,10 +350,32 @@ window.onload = function() {
 		moveSection();
 	};
 
-	window.addEventListener('scroll', function() {
+	if(isMac) {
+		window.addEventListener('wheel',function(e) {
 
-		moveSection();
-	});
+			if(winScrollTop >= sectionMainTop && winScrollTop < sectionMainBottom) {
+				e.preventDefault();
+			}
+
+			var delta = e.deltaY;
+			moveSection(delta);
+
+		}, {passive: false});
+	} else {
+		var beforeScroll = -1;
+		window.addEventListener('scroll', function() {
+
+			var delta = 0;
+			if(beforeScroll > window.pageYOffset) {
+				delta = -1
+			}else {
+				delta = 1
+			}
+
+			moveSection(delta);
+			beforeScroll = window.pageYOffset;
+		}, false);
+	}
 
 	init();
 };
