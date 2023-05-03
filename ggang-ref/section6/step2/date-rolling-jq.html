@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 	<title>깡코딩 - 초보자도 만들 수 있는 스크를인터렉션1편</title>
 	<link rel="stylesheet" type="text/css" href="../../library/css/common.css">
+	<script type="text/javascript" src="../../library/js/jquery.1.12.4.js"></script>
 </head>
 <style type="text/css">
 /* common */
@@ -32,8 +33,8 @@
 .section_today.active .date_box .date_count {opacity: 1;}
 
 .section_today .date_box .date_count:after {clear:both; display:block; content:'';}
-.section_today .date_box .date_count .count_box { float: left;  animation: count_date 2.8s 1 ease-out both paused;}
-.section_today .date_box .date_count .count_box.active { animation-play-state: running;}
+.section_today .date_box .date_count .count_box { float: left;  animation: count_date 2.8s 1 ease-out both paused;opacity: 0;}
+.section_today .date_box .date_count .count_box.active { animation-play-state: running;opacity: 1;}
 .section_today .date_box .date_count .count_box span {display:block; height:200px; color:#fff; font-size:200px; line-height: 1; text-align: center; -webkit-text-fill-color:transparent; -webkit-text-stroke:6px #fff;}
 
 
@@ -65,42 +66,36 @@
 		<footer class="footer">
 			<div class="text_area">
 				<p>
-					2020 GGANG CODING. 당신의 열정을 응원합니다. :)
+					2023 JAEHEE :)
 				</p>
 			</div>
 		</footer>
 	</div>
-<!--
-****** 2020 깡코딩 LICENSE 안내 ******
-이 프로그램은 저작권법의 보호를 받습니다.
-이 프로그램은 깡코딩 강의를 수강한 수강생들에게 무료로 제공됩니다.
-이 프로그램은 웹,앱 프로젝트에 자유롭게 사용할 수 있지만
-웹사이트, 커뮤니티, 블로그에 배포하거나 인터넷 강의, 유튜브등 유료 무료 강좌에 배포, 사용하는
-행위는 민사 및 형사법에 의해 규제되어 있으며, 기소 될 수 있습니다.
--->
+
+	
 <script type="text/javascript">
 
-window.onload = function() {
+$(function(){
 
+	/* 날짜 카운트*/
 	function countDate() {
 
-		var el = document.querySelector('.date_count')
+		var el = $('.date_count');
 		var date = new Date();
 		var todayDate = String(date.getFullYear()) + String(date.getMonth() + 1) + String(date.getDate());
-		var rolling = 24;
+		var rolling = 24; // 돌아가는 횟수
 		var resultArray = [];
 			resultArray = todayDate.split('');
 
-		resultArray.forEach(function(val, idx){
-			var conuntBox = document.createElement('div');
-			conuntBox.className = 'count_box';
-
-			var numberArray = [];
-			var number = Number(val);
+		$.each(resultArray, function(idx, val) {
+			let conuntBox = $('<div class="count_box" />');
+			let numberArray = [];
+			let number = Number(val);
 
 			for(var i = 0; i <= rolling; i++) {
-				var sum = number + i;
-				var num = sum >= 10 ? Number(String(sum).split('')[1]) : sum;
+				let sum = number + i;
+				// 롤링에 사용될 숫자는 0~9 이고, sum 의 숫자에서 앞자리를 제거하면 0 ~ 9 로만 계속 나옴
+				let num = sum >= 10 ? Number(String(sum).split('')[1]) : sum;
 				numberArray[i] = num;
 			};
 
@@ -108,26 +103,27 @@ window.onload = function() {
 
 			numberArray.forEach(function(val) {
 
-				var countValue = document.createElement('span');
-					countValue.innerText = val;
+				var countValue = $('<span/>', {
+					text: val
+				});
 
-					conuntBox.appendChild(countValue);
-
+			countValue.appendTo(conuntBox);
 			});
 
-			el.appendChild(conuntBox);
-
-			setTimeout(function() {
-				conuntBox.classList.add('active');
-			}, idx * 300);
+			conuntBox
+			.appendTo(el)
+			.delay(idx * 300)
+			.queue(function(){
+				$(this).addClass('active');
+			});
 		});
 
 	};
 	countDate();
-};
+});
 
-setTimeout(function(){
-	document.querySelector('section').classList.add('active');
+setTimeout(function() {
+	$('section').addClass('active');
 },200);
 
 </script>

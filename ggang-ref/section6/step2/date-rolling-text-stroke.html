@@ -6,7 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 	<title>깡코딩 - 초보자도 만들 수 있는 스크를인터렉션1편</title>
 	<link rel="stylesheet" type="text/css" href="../../library/css/common.css">
-	<script type="text/javascript" src="../../library/js/jquery.1.12.4.js"></script>
 </head>
 <style type="text/css">
 /* common */
@@ -26,14 +25,30 @@
 .section_today {overflow:hidden; position:relative; height:100vh; background: #000; text-align:center;}
 .section_today .date_box {height: 100%;}
 
-.section_today .date_box .t_date {position: absolute; left:20px; top:400px; z-index:100; font-size:300px; color:#fff; opacity: .1; transform:translateX(-100%); -webkit-transform:translateX(-100%); -moz-transform:translateX(-100%); -o-transform:translateX(-100%); -ms-transform:translateX(-100%); -webkit-text-fill-color:transparent; -webkit-text-stroke:2px #fff; transition:transform 1s;}
-.section_today.active .date_box .t_date {transform:translateX(0%); -webkit-transform:translateX(0%); -moz-transform:translateX(0%); -o-transform:translateX(0%); -ms-transform:translateX(0%);}
+.section_today .date_box .t_date {
+	position: absolute; left:20px; top:400px; z-index:100; font-size:300px; color:#fff; opacity: .1;
+	-webkit-transform:translateX(-100%); 
+	transform:translateX(-100%); 
+
+	 -webkit-text-fill-color:transparent; 
+	 -webkit-text-stroke:2px #fff; 
+	 transition:transform 1s;
+	}
+.section_today.active .date_box .t_date {
+	 -webkit-transform:translateX(0%);
+	  transform:translateX(0%);
+}
 
 .section_today .date_box .date_count {overflow:hidden; position: relative; display:inline-block; height: 200px; opacity: 0; transition:opacity .5s 1s;}
 .section_today.active .date_box .date_count {opacity: 1;}
 
 .section_today .date_box .date_count:after {clear:both; display:block; content:'';}
-.section_today .date_box .date_count .count_box { float: left;  animation: count_date 2.8s 1 ease-out both paused;}
+.section_today .date_box .date_count .count_box { 
+	float: left; 
+	animation: count_date 2.8s 1 ease-out both paused;
+	/* opacity: 0; */
+}
+/* .section_today .date_box .date_count.opacity .count_box {opacity: 1;} */
 .section_today .date_box .date_count .count_box.active { animation-play-state: running;}
 .section_today .date_box .date_count .count_box span {display:block; height:200px; color:#fff; font-size:200px; line-height: 1; text-align: center; -webkit-text-fill-color:transparent; -webkit-text-stroke:6px #fff;}
 
@@ -43,7 +58,9 @@
 		transform: translateY(0px);
 	}
 	100% {
-		transform: translateY(-4800px); /* 높이 x 롤링될 개수로 구한값 */
+		/* 높이 x 롤링될 개수로 구한값 */
+		/* 200 * 24 = 4800 */
+		transform: translateY(-4800px); 
 	}
 }
 
@@ -66,70 +83,72 @@
 		<footer class="footer">
 			<div class="text_area">
 				<p>
-					2020 GGANG CODING. 당신의 열정을 응원합니다. :)
+					2023 JAEHEE :)
 				</p>
 			</div>
 		</footer>
 	</div>
-<!--
-****** 2020 깡코딩 LICENSE 안내 ******
-이 프로그램은 저작권법의 보호를 받습니다.
-이 프로그램은 깡코딩 강의를 수강한 수강생들에게 무료로 제공됩니다.
-이 프로그램은 웹,앱 프로젝트에 자유롭게 사용할 수 있지만
-웹사이트, 커뮤니티, 블로그에 배포하거나 인터넷 강의, 유튜브등 유료 무료 강좌에 배포, 사용하는
-행위는 민사 및 형사법에 의해 규제되어 있으며, 기소 될 수 있습니다.
--->
+
+	
 <script type="text/javascript">
 
-$(function(){
+window.onload = function() {
 
-	/* 날짜 카운트*/
 	function countDate() {
 
-		var el = $('.date_count');
-		var date = new Date();
-		var todayDate = String(date.getFullYear()) + String(date.getMonth() + 1) + String(date.getDate());
-		var rolling = 24;
-		var resultArray = [];
+		let el = document.querySelector('.date_count')
+		let date = new Date();
+		let todayDate = `${date.getFullYear()} ${date.getMonth() + 1} ${date.getDate()}`;
+		// let todayDate = String(date.getFullYear()) + String(date.getMonth() + 1) + String(date.getDate());
+		let rolling = 24;
+		let resultArray = [];
 			resultArray = todayDate.split('');
+		
+		console.log(resultArray);
 
-		$.each(resultArray, function(idx, val) {
-			var conuntBox = $('<div class="count_box" />');
-			var numberArray = [];
-			var number = Number(val);
+		resultArray.forEach(function(val, idx){
+			let conuntBox = document.createElement('div');
+			conuntBox.className = 'count_box';
 
-			for(var i = 0; i <= rolling; i++) {
-				var sum = number + i;
-				var num = sum >= 10 ? Number(String(sum).split('')[1]) : sum;
+			let numberArray = [];
+			let number = Number(val);
+
+			for(let i = 0; i <= rolling; i++) {
+				let sum = number + i;
+				let num = sum >= 10 ? Number(String(sum).split('')[1]) : sum;
 				numberArray[i] = num;
 			};
 
+			// 배열을 뒤집어서 오늘 해당날짜값이 나오도록 함
 			numberArray.reverse();
 
 			numberArray.forEach(function(val) {
 
-				var countValue = $('<span/>', {
-					text: val
-				});
+				let countValue = document.createElement('span');
+					countValue.innerText = val;
 
-			countValue.appendTo(conuntBox);
+					conuntBox.appendChild(countValue);
+
 			});
 
-			conuntBox
-			.appendTo(el)
-			.delay(idx * 300)
-			.queue(function(){
-				$(this).addClass('active');
-			});
+			el.appendChild(conuntBox);
+
+			setTimeout(function() {
+				conuntBox.classList.add('active');
+			}, idx * 300);
 		});
 
 	};
 	countDate();
-});
+};
 
-setTimeout(function() {
-	$('section').addClass('active');
-},200);
+setTimeout(function(){
+	document.querySelector('section').classList.add('active');
+}, 200);
+
+setTimeout(function(){
+	document.querySelector('.date_count').classList.add('opacity');
+}, 1000);
 
 </script>
 </body>
