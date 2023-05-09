@@ -108,14 +108,8 @@
 		</section>
 		<section class="ggang_box"></section>
 	</div>
-<!--
-****** 2020 깡코딩 LICENSE 안내 ******
-이 프로그램은 저작권법의 보호를 받습니다.
-이 프로그램은 깡코딩 강의를 수강한 수강생들에게 무료로 제공됩니다.
-이 프로그램은 웹,앱 프로젝트에 자유롭게 사용할 수 있지만
-웹사이트, 커뮤니티, 블로그에 배포하거나 인터넷 강의, 유튜브등 유료 무료 강좌에 배포, 사용하는
-행위는 민사 및 형사법에 의해 규제되어 있으며, 기소 될 수 있습니다.
--->
+
+	
 <script type="text/javascript">
 window.onload = function() {
 
@@ -147,10 +141,18 @@ window.onload = function() {
 		scrollHeight = scrollBody.offsetHeight;
 		winScrollTop = window.pageYOffset;
 		sectionOffsetTop = scrollBody.getBoundingClientRect().top + winScrollTop;
-		scrollRealHeight = (scrollHeight - window.innerHeight);
+		// console.log(scrollBody.getBoundingClientRect().top, winScrollTop, scrollBody.offsetTop);
+
+		// console.log(scrollHeight, window.innerHeight); // 타켓 섹션의 높이값
+		scrollRealHeight = (scrollHeight - window.innerHeight); // 타켓 요소의 실제 스크롤이 일어날 진짜 스크롤높이
 		sectionScrolTop = winScrollTop - sectionOffsetTop;
+		// console.log(sectionScrolTop);
+
+		// console.log(sectionScrolTop, window.pageYOffset - scrollBody.offsetTop);
+
 		scrollPerecnt =  sectionScrolTop / scrollRealHeight;
 		percent = scrollPerecnt * 100 ;
+		// console.log(scrollPerecnt, percent);
 	};
 
 	function contentIn() {
@@ -245,9 +247,12 @@ window.onload = function() {
 		if(percent < 0) {
 
 			imageChange(imgWidth * 0);
-			document.querySelectorAll('.fix_motion .text_box p').forEach(function(el) {
-				el.classList.remove('active');
-			});
+
+			// document.querySelectorAll('.fix_motion .text_box p').forEach(function(el) {
+			// 	el.classList.remove('active');
+			// });
+			
+			document.querySelectorAll('.fix_motion .text_box p').forEach( elem => elem.classList.remove('active') );
 		}
 	};
 
